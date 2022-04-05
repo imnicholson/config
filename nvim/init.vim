@@ -29,6 +29,16 @@ unlet autoload_plug_path
 " plug install
 call plug#begin(stdpath('config') . '/plugged')
 
+  " common configs for language server client https://github.com/neovim/nvim-lspconfig
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'williamboman/nvim-lsp-installer', { 'branch': 'main' }
+
+  " language highlighter
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+  " Themes
+  Plug 'NLKNguyen/papercolor-theme'
+  Plug 'mhartington/oceanic-next'
 
 call plug#end()
 call plug#helptags()
@@ -39,3 +49,35 @@ if plug_install
 endif
 unlet plug_install
 
+" set leader key to ,
+let g:mapleader=","
+
+" general settings
+set hidden
+set tabstop=2 softtabstop=2
+set shiftwidth=2
+set expandtab
+set ruler
+set number
+set relativenumber
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable delays and poor user experience.
+set updatetime=300
+
+" Theme Selection 
+set colorcolumn=160
+colorscheme PaperColor
+" colorscheme OceanicNext
+
+" Move lines up and down with Alt-j and Alt
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
+lua <<EOF
+require("lsp")
+require("treesitter")
+EOF
